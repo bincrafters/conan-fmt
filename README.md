@@ -1,25 +1,25 @@
-[ ![Download](https://api.bintray.com/packages/bincrafters/public-conan/fmtlib%3Abincrafters/images/download.svg) ](https://bintray.com/bincrafters/public-conan/fmtlib%3Abincrafters/_latestVersion)
-[![Build Status](https://travis-ci.org/bincrafters/conan-fmtlib.svg?branch=stable%2F4.0.0)](https://travis-ci.org/bincrafters/conan-fmtlib)
-[![Build status](https://ci.appveyor.com/api/projects/status/8onn9281i4if1ygi/branch/stable/4.0.0?svg=true)](https://ci.appveyor.com/project/BinCrafters/conan-fmtlib/branch/stable/4.0.0)
+[ ![Download](https://api.bintray.com/packages/bincrafters/public-conan/fmt%3Abincrafters/images/download.svg) ](https://bintray.com/bincrafters/public-conan/fmt%3Abincrafters/_latestVersion)
+[![Build Status](https://travis-ci.org/bincrafters/conan-fmt.svg?branch=stable%2F4.0.0)](https://travis-ci.org/bincrafters/conan-fmt)
+[![Build status](https://ci.appveyor.com/api/projects/status/8onn9281i4if1ygi/branch/stable/4.0.0?svg=true)](https://ci.appveyor.com/project/BinCrafters/conan-fmt/branch/stable/4.0.0)
 
-## This repository holds a conan recipe for fmtlib.
+## This repository holds a conan recipe for fmt.
 
-[Conan.io](https://conan.io) package for [fmtlib](http://fmtlib.net/) project
+[Conan.io](https://conan.io) package for [fmt](http://fmtlib.net/) project
 
-The packages generated with this **conanfile** can be found in [Bintray](https://bintray.com/bincrafters/public-conan/fmtlib%3Abincrafters).
+The packages generated with this **conanfile** can be found in [Bintray](https://bintray.com/bincrafters/public-conan/fmt%3Abincrafters).
 
 ## For Users: Use this package
 
 ### Basic setup
 
-    $ conan install fmtlib/4.0.0@bincrafters/stable
+    $ conan install fmt/4.0.0@bincrafters/stable
 
 ### Project setup
 
 If you handle multiple dependencies in your project is better to add a *conanfile.txt*
 
     [requires]
-    fmtlib/4.0.0@bincrafters/stable
+    fmt/4.0.0@bincrafters/stable
 
     [generators]
     txt
@@ -46,7 +46,7 @@ The following command both runs all the steps of the conan file, and publishes t
 
 ## Upload
 
-    $ conan upload fmtlib/4.0.0@bincrafters/stable --all -r bincrafters
+    $ conan upload fmt/4.0.0@bincrafters/stable --all -r bincrafters
 
 ### License
-[BSD](https://github.com/fmtlib/fmt#license)
+[BSD](LICENSE.rst)

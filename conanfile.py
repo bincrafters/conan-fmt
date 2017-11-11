@@ -5,11 +5,11 @@ from conans import ConanFile, CMake, tools
 import os
 
 
-class FmtlibConan(ConanFile):
-    name = "fmtlib"
+class FmtConan(ConanFile):
+    name = "fmt"
     version = "4.0.0"
     license = "MIT"
-    url = "https://github.com/bincrafters/conan-fmtlib"
+    url = "https://github.com/bincrafters/conan-fmt"
     description = "A safe and fast alternative to printf and IOStreams."
     settings = "os", "compiler", "build_type", "arch"
     options = {"shared": [True, False], "header_only": [True, False]}
