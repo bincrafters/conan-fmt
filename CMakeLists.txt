@@ -1,4 +1,4 @@
-project(conan-fmtlib)
+project(cmake_wrapper)
 
 include(conanbuildinfo.cmake)
 CONAN_BASIC_SETUP()

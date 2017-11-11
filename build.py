@@ -44,6 +44,6 @@ if __name__ == "__main__":
 
     # Header only
     if platform.system() == "Linux" and os.getenv("CONAN_GCC_VERSIONS", False) == "6.3":
-        builder.add({}, {"fmtlib:header_only": True}, {}, {})
+        builder.add({}, {"%s:header_only" % name: True}, {}, {})
 
     builder.run()
