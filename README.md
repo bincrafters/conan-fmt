@@ -1,6 +1,6 @@
 [ ![Download](https://api.bintray.com/packages/bincrafters/public-conan/fmt%3Abincrafters/images/download.svg) ](https://bintray.com/bincrafters/public-conan/fmt%3Abincrafters/_latestVersion)
 [![Build Status](https://travis-ci.org/bincrafters/conan-fmt.svg?branch=stable%2F4.0.0)](https://travis-ci.org/bincrafters/conan-fmt)
-[![Build status](https://ci.appveyor.com/api/projects/status/8onn9281i4if1ygi/branch/stable/4.0.0?svg=true)](https://ci.appveyor.com/project/BinCrafters/conan-fmt/branch/stable/4.0.0)
+[![Build status](https://ci.appveyor.com/api/projects/status/gg95c2s6l06ls86g?svg=true)](https://ci.appveyor.com/project/BinCrafters/conan-fmt)
 
 ## This repository holds a conan recipe for fmt.
 
