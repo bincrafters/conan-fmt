@@ -35,6 +35,7 @@ class FmtConan(ConanFile):
             cmake.definitions["FMT_TEST"] = False
             cmake.definitions["FMT_INSTALL"] = True
             cmake.definitions["BUILD_SHARED_LIBS"] = self.options.shared
+            cmake.definitions["FMT_LIB_DIR"] = "lib"
             cmake.configure()
             cmake.build()
             cmake.install()
