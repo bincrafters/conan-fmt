@@ -5,7 +5,7 @@ from conan.packager import ConanMultiPackager
 from conans import tools
 import importlib
 import os
-
+import platform
 
 def get_module_location():
     repo = os.getenv("CONAN_MODULE_REPO", "https://raw.githubusercontent.com/bincrafters/conan-templates")
