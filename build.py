@@ -1,39 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from conan.packager import ConanMultiPackager
-from conans import tools
-import importlib
-import os
-import platform
 
-def get_module_location():
-    repo = os.getenv("CONAN_MODULE_REPO", "https://raw.githubusercontent.com/bincrafters/conan-templates")
-    branch = os.getenv("CONAN_MODULE_BRANCH", "package_tools_modules")
-    return repo + "/" + branch
+from bincrafters import build_template_default
 
-    
-def get_module_name():
-    return os.getenv("CONAN_MODULE_NAME", "build_template_default")
-
-    
-def get_module_filename():
-    return get_module_name() + ".py"
-    
-    
-def get_module_url():
-    return get_module_location() + "/" + get_module_filename()
-
-    
 if __name__ == "__main__":
-    
-    tools.download(get_module_url(), get_module_filename(), overwrite=True)
-    
-    module = importlib.import_module(get_module_name())
-    
-    builder = module.get_builder()
-    
-        # Header only
+
+    builder = build_template_default.get_builder()
+
+    # Add one extra build to create a header-only version
     if platform.system() == "Linux" and os.getenv("CONAN_GCC_VERSIONS", False) == "6.3":
         builder.add({}, {"fmt:header_only" : True}, {}, {})
     
