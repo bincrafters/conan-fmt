@@ -18,7 +18,8 @@ class FmtConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     options = {"shared": [True, False], "header_only": [True, False]}
     default_options = "shared=False", "header_only=False"
-
+    source_subfolder = "source_subfolder"
+    
     def config_options(self):
         if self.options.header_only:
             self.settings.clear()
@@ -27,8 +28,9 @@ class FmtConan(ConanFile):
     def source(self):
         source_url = "https://github.com/fmtlib/fmt"
         tools.get("{0}/archive/{1}.tar.gz".format(source_url, self.version))
-        os.rename("fmt-{0}".format(self.version), "sources")
-
+        extracted_dir = self.name + "-" + self.version
+        os.rename(extracted_dir, self.source_subfolder)
+        
     def build(self):
         if not self.options.header_only:
             cmake = CMake(self)
@@ -41,10 +43,13 @@ class FmtConan(ConanFile):
             cmake.install()
 
     def package(self):
-        self.copy("license*", dst="licenses", src=os.path.join("sources"), ignore_case=True, keep_path=False)
+        src_dir = os.path.join(self.source_subfolder, "fmt")
+        dst_dir = os.path.join("include", "fmt")
+        
+        self.copy("LICENSE.rst", dst="license", src=self.source_subfolder, keep_path=False)
         if self.options.header_only:
-            self.copy("*.h", src=os.path.join("sources", "fmt"), dst=os.path.join("include", "fmt"))
-            self.copy("*.cc", src=os.path.join("sources", "fmt"), dst=os.path.join("include", "fmt"))
+            self.copy("*.h", dst=dst_dir, src=src_dir)
+            self.copy("*.cc", dst=dst_dir, src=src_dir)
 
     def package_info(self):
         if self.options.header_only:
