@@ -8,16 +8,16 @@ import os
 class FmtConan(ConanFile):
     name = "fmt"
     version = "4.1.0"
-    license = "https://github.com/fmtlib/fmt/blob/master/LICENSE.rst"
-    url = "https://github.com/bincrafters/conan-fmt"
     homepage = "https://github.com/fmtlib/fmt"
     description = "A safe and fast alternative to printf and IOStreams."
+    url = "https://github.com/bincrafters/conan-fmt"
+    license = "MIT"
+    exports = ['LICENSE.md']
+    exports_sources = ['CMakeLists.txt']
+    generators = 'cmake'
     settings = "os", "compiler", "build_type", "arch"
     options = {"shared": [True, False], "header_only": [True, False]}
     default_options = "shared=False", "header_only=False"
-    exports = ["LICENSE.md"]
-    exports_sources = ['CMakeLists.txt']
-    generators = 'cmake'
 
     def config_options(self):
         if self.options.header_only:
