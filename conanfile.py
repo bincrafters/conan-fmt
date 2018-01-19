@@ -44,6 +44,7 @@ class FmtConan(ConanFile):
         src_dir = os.path.join(self.source_subfolder, "fmt")
         dst_dir = os.path.join("include", "fmt")
         
+        self.copy("LICENSE.rst", dst="license", src=self.source_subfolder, keep_path=False)
         if self.options.header_only:
             self.copy("*.h", dst=dst_dir, src=src_dir)
             self.copy("*.cc", dst=dst_dir, src=src_dir)
