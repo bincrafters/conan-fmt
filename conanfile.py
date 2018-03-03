@@ -7,7 +7,7 @@ import os
 
 class FmtConan(ConanFile):
     name = "fmt"
-    version = "4.1.0"
+    version = "4.0.0"
     homepage = "https://github.com/fmtlib/fmt"
     description = "A safe and fast alternative to printf and IOStreams."
     url = "https://github.com/bincrafters/conan-fmt"
