@@ -54,6 +54,7 @@ class FmtConan(ConanFile):
     def package_info(self):
         if self.options.header_only:
             self.info.header_only()
+            self.cpp_info.defines = ["FMT_HEADER_ONLY"]
         else:
             self.cpp_info.libs = ["fmt"]
 
