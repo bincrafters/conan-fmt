@@ -19,6 +19,7 @@ class FmtConan(ConanFile):
     options = {"shared": [True, False], "header_only": [True, False], "fPIC": [True, False]}
     default_options = "shared=False", "header_only=False", "fPIC=True"
     source_subfolder = "source_subfolder"
+    build_subfolder = "build_subfolder"
     
     def config_options(self):
         if self.options.header_only:
@@ -47,7 +48,7 @@ class FmtConan(ConanFile):
             cmake.definitions["FMT_LIB_DIR"] = "lib"
             if self.settings.os != "Windows":
                 cmake.definitions["CMAKE_POSITION_INDEPENDENT_CODE"] = self.options.fPIC
-            cmake.configure()
+            cmake.configure(build_folder=self.build_subfolder)
             cmake.build()
             cmake.install()
 
