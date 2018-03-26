@@ -16,14 +16,21 @@ class FmtConan(ConanFile):
     exports_sources = ['CMakeLists.txt']
     generators = 'cmake'
     settings = "os", "compiler", "build_type", "arch"
-    options = {"shared": [True, False], "header_only": [True, False]}
-    default_options = "shared=False", "header_only=False"
+    options = {"shared": [True, False], "header_only": [True, False], "fPIC": [True, False]}
+    default_options = "shared=False", "header_only=False", "fPIC=True"
     source_subfolder = "source_subfolder"
     
     def config_options(self):
         if self.options.header_only:
             self.settings.clear()
             self.options.remove("shared")
+            self.options.remove("fPIC")
+        elif self.options.shared:
+            self.options.fPIC = True
+
+    def configure(self):
+        if self.settings.os == "Windows":
+            del self.options.fPIC
 
     def source(self):
         source_url = "https://github.com/fmtlib/fmt"
@@ -38,6 +45,8 @@ class FmtConan(ConanFile):
             cmake.definitions["FMT_INSTALL"] = True
             cmake.definitions["BUILD_SHARED_LIBS"] = self.options.shared
             cmake.definitions["FMT_LIB_DIR"] = "lib"
+            if self.settings.os != "Windows":
+                cmake.definitions["CMAKE_POSITION_INDEPENDENT_CODE"] = self.options.fPIC
             cmake.configure()
             cmake.build()
             cmake.install()
