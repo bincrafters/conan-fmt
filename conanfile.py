@@ -16,21 +16,29 @@ class FmtConan(ConanFile):
     exports_sources = ['CMakeLists.txt']
     generators = 'cmake'
     settings = "os", "compiler", "build_type", "arch"
-    options = {"shared": [True, False], "header_only": [True, False]}
-    default_options = "shared=False", "header_only=False"
+    options = {"shared": [True, False], "header_only": [True, False], "fPIC": [True, False]}
+    default_options = "shared=False", "header_only=False", "fPIC=True"
     source_subfolder = "source_subfolder"
-    
+    build_subfolder = "build_subfolder"
+
     def config_options(self):
+        if self.settings.os == "Windows":
+            del self.options.fPIC
+
+    def configure(self):
         if self.options.header_only:
             self.settings.clear()
             self.options.remove("shared")
+            self.options.remove("fPIC")
+        elif self.options.shared and self.settings.os != "Windows":
+            self.options.fPIC = True
 
     def source(self):
         source_url = "https://github.com/fmtlib/fmt"
         tools.get("{0}/archive/{1}.tar.gz".format(source_url, self.version))
         extracted_dir = self.name + "-" + self.version
         os.rename(extracted_dir, self.source_subfolder)
-        
+
     def build(self):
         if not self.options.header_only:
             cmake = CMake(self)
@@ -38,14 +46,16 @@ class FmtConan(ConanFile):
             cmake.definitions["FMT_INSTALL"] = True
             cmake.definitions["BUILD_SHARED_LIBS"] = self.options.shared
             cmake.definitions["FMT_LIB_DIR"] = "lib"
-            cmake.configure()
+            if self.settings.os != "Windows":
+                cmake.definitions["CMAKE_POSITION_INDEPENDENT_CODE"] = self.options.fPIC
+            cmake.configure(build_folder=self.build_subfolder)
             cmake.build()
             cmake.install()
 
     def package(self):
         src_dir = os.path.join(self.source_subfolder, "fmt")
         dst_dir = os.path.join("include", "fmt")
-        
+
         self.copy("LICENSE.rst", dst="license", src=self.source_subfolder, keep_path=False)
         if self.options.header_only:
             self.copy("*.h", dst=dst_dir, src=src_dir)
@@ -58,5 +68,5 @@ class FmtConan(ConanFile):
         else:
             self.cpp_info.libs = ["fmt"]
 
-        if self.options.shared and not self.options.header_only:
+        if not self.options.header_only and self.options.shared:
             self.cpp_info.bindirs.append("lib")

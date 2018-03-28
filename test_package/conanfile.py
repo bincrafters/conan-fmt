@@ -8,7 +8,7 @@ class TestPackageConan(ConanFile):
 
     def build(self):
         cmake = CMake(self)
-        cmake.definitions["FMT_HEADER_ONLY"] = self.options["fmtlib"].header_only
+        cmake.definitions["FMT_HEADER_ONLY"] = self.options["fmt"].header_only
         cmake.configure()
         cmake.build()
 
