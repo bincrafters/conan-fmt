@@ -7,17 +7,18 @@ import os
 
 class FmtConan(ConanFile):
     name = "fmt"
-    version = "4.1.0"
+    version = "5.0.0"
     homepage = "https://github.com/fmtlib/fmt"
     description = "A safe and fast alternative to printf and IOStreams."
     url = "https://github.com/bincrafters/conan-fmt"
+    author = "Bincrafters <bincrafters@gmail.com>"
     license = "MIT"
     exports = ['LICENSE.md']
     exports_sources = ['CMakeLists.txt']
     generators = 'cmake'
-    settings = "os", "compiler", "build_type", "arch"
-    options = {"shared": [True, False], "header_only": [True, False], "fPIC": [True, False]}
-    default_options = "shared=False", "header_only=False", "fPIC=True"
+    settings = "os", "compiler", "build_type", "arch", "cppstd"
+    options = {"shared": [True, False], "header_only": [True, False], "fPIC": [True, False], "with_cpp14": [True, False]}
+    default_options = "shared=False", "header_only=False", "fPIC=True", "with_cpp14=True"
     source_subfolder = "source_subfolder"
     build_subfolder = "build_subfolder"
 
@@ -26,12 +27,13 @@ class FmtConan(ConanFile):
             del self.options.fPIC
 
     def configure(self):
+        if not self.settings.cppstd:
+            self.settings.cppstd = 14 if self.options.with_cpp14 else 11
         if self.options.header_only:
             self.settings.clear()
             self.options.remove("shared")
             self.options.remove("fPIC")
-        elif self.options.shared and self.settings.os != "Windows":
-            self.options.fPIC = True
+            self.options.remove("with_cpp14")
 
     def source(self):
         source_url = "https://github.com/fmtlib/fmt"
@@ -46,19 +48,18 @@ class FmtConan(ConanFile):
             cmake.definitions["FMT_INSTALL"] = True
             cmake.definitions["BUILD_SHARED_LIBS"] = self.options.shared
             cmake.definitions["FMT_LIB_DIR"] = "lib"
-            if self.settings.os != "Windows":
-                cmake.definitions["CMAKE_POSITION_INDEPENDENT_CODE"] = self.options.fPIC
+            cmake.definitions["FMT_USE_CPP14"] = self.options.with_cpp14
             cmake.configure(build_folder=self.build_subfolder)
             cmake.build()
             cmake.install()
 
     def package(self):
-        src_dir = os.path.join(self.source_subfolder, "fmt")
-        dst_dir = os.path.join("include", "fmt")
-
-        self.copy("LICENSE.rst", dst="license", src=self.source_subfolder, keep_path=False)
+        self.copy("LICENSE.rst", dst="licenses", src=self.source_subfolder, keep_path=False)
         if self.options.header_only:
-            self.copy("*.h", dst=dst_dir, src=src_dir)
+            src_dir = os.path.join(self.source_subfolder, "src")
+            header_dir = os.path.join(self.source_subfolder, "include")
+            dst_dir = os.path.join("include", "fmt")
+            self.copy("*.h", dst="include", src=header_dir)
             self.copy("*.cc", dst=dst_dir, src=src_dir)
 
     def package_info(self):
