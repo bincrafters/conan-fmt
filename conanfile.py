@@ -18,7 +18,7 @@ class FmtConan(ConanFile):
     generators = 'cmake'
     settings = "os", "compiler", "build_type", "arch", "cppstd"
     options = {"shared": [True, False], "header_only": [True, False], "fPIC": [True, False], "with_cpp14": [True, False]}
-    default_options = "shared=False", "header_only=False", "fPIC=True", "with_cpp14=True"
+    default_options = "shared=False", "header_only=False", "fPIC=True", "with_cpp14=False"
     source_subfolder = "source_subfolder"
     build_subfolder = "build_subfolder"
 
@@ -67,7 +67,7 @@ class FmtConan(ConanFile):
             self.info.header_only()
             self.cpp_info.defines = ["FMT_HEADER_ONLY"]
         else:
-            self.cpp_info.libs = ["fmt"]
+            self.cpp_info.libs = tools.collect_libs(self)
 
         if not self.options.header_only and self.options.shared:
             self.cpp_info.bindirs.append("lib")
