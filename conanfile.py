@@ -24,7 +24,7 @@ class FmtConan(ConanFile):
 
     def config_options(self):
         if self.settings.os == "Windows":
-            del self.options.fPIC
+            self.options.remove("fPIC")
 
     def configure(self):
         if not self.settings.cppstd:
@@ -41,17 +41,20 @@ class FmtConan(ConanFile):
         extracted_dir = self.name + "-" + self.version
         os.rename(extracted_dir, self.source_subfolder)
 
+    def configure_cmake(self):
+        cmake = CMake(self)
+        cmake.definitions["FMT_TEST"] = False
+        cmake.definitions["FMT_INSTALL"] = True
+        cmake.definitions["BUILD_SHARED_LIBS"] = self.options.shared
+        cmake.definitions["FMT_LIB_DIR"] = "lib"
+        cmake.definitions["FMT_USE_CPP14"] = self.options.with_cpp14
+        cmake.configure(build_folder=self.build_subfolder)
+        return cmake
+
     def build(self):
         if not self.options.header_only:
-            cmake = CMake(self)
-            cmake.definitions["FMT_TEST"] = False
-            cmake.definitions["FMT_INSTALL"] = True
-            cmake.definitions["BUILD_SHARED_LIBS"] = self.options.shared
-            cmake.definitions["FMT_LIB_DIR"] = "lib"
-            cmake.definitions["FMT_USE_CPP14"] = self.options.with_cpp14
-            cmake.configure(build_folder=self.build_subfolder)
+            cmake = self.configure_cmake()
             cmake.build()
-            cmake.install()
 
     def package(self):
         self.copy("LICENSE.rst", dst="licenses", src=self.source_subfolder, keep_path=False)
@@ -61,6 +64,9 @@ class FmtConan(ConanFile):
             dst_dir = os.path.join("include", "fmt")
             self.copy("*.h", dst="include", src=header_dir)
             self.copy("*.cc", dst=dst_dir, src=src_dir)
+        else:
+            cmake = self.configure_cmake()
+            cmake.install()
 
     def package_info(self):
         if self.options.header_only:
