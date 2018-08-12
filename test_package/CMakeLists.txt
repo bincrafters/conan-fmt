@@ -11,3 +11,5 @@ set_property(TARGET ${CMAKE_PROJECT_NAME} PROPERTY CXX_STANDARD 11)
 if (FMT_HEADER_ONLY)
     target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE FMT_HEADER_ONLY=1)
 endif(FMT_HEADER_ONLY)
+
+add_subdirectory(test_ranges)
