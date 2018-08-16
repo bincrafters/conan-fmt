@@ -3,7 +3,6 @@
 
 from conans import ConanFile, CMake, tools
 import os
-import shutil
 
 
 class FmtConan(ConanFile):
@@ -63,10 +62,6 @@ class FmtConan(ConanFile):
         else:
             cmake = self.configure_cmake()
             cmake.install()
-            if self.settings.os == "Windows" and self.options.shared:
-                src_path = os.path.join(self.package_folder, "lib", "fmt.dll")
-                dst_path = os.path.join(self.package_folder, "bin", "fmt.dll")
-                shutil.move(src_path, dst_path)
 
     def package_info(self):
         if self.options.header_only:
