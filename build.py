@@ -23,5 +23,4 @@ if __name__ == "__main__":
     if tools.os_info.is_linux and os.getenv("CONAN_GCC_VERSIONS", False) == "6.3":
         builder.add({}, {"fmt:header_only" : True}, {}, {})
 
-    return
     builder.run()
