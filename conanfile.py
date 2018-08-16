@@ -14,11 +14,11 @@ class FmtConan(ConanFile):
     author = "Bincrafters <bincrafters@gmail.com>"
     license = "MIT"
     exports = ['LICENSE.md']
-    exports_sources = ['CMakeLists.txt']
+    exports_sources = ['CMakeLists.txt', 'CMakeLists.txt.patch']
     generators = 'cmake'
-    settings = "os", "compiler", "build_type", "arch", "cppstd"
-    options = {"shared": [True, False], "header_only": [True, False], "fPIC": [True, False], "with_cpp14": [True, False]}
-    default_options = "shared=False", "header_only=False", "fPIC=True", "with_cpp14=False"
+    settings = "os", "compiler", "build_type", "arch"
+    options = {"shared": [True, False], "header_only": [True, False], "fPIC": [True, False]}
+    default_options = "shared=False", "header_only=False", "fPIC=True"
     source_subfolder = "source_subfolder"
     build_subfolder = "build_subfolder"
 
@@ -27,27 +27,23 @@ class FmtConan(ConanFile):
             self.options.remove("fPIC")
 
     def configure(self):
-        if not self.settings.cppstd:
-            self.settings.cppstd = 14 if self.options.with_cpp14 else 11
         if self.options.header_only:
             self.settings.clear()
             self.options.remove("shared")
             self.options.remove("fPIC")
-            self.options.remove("with_cpp14")
 
     def source(self):
-        source_url = "https://github.com/fmtlib/fmt"
-        tools.get("{0}/archive/{1}.tar.gz".format(source_url, self.version))
+        tools.get("{0}/archive/{1}.tar.gz".format(self.homepage, self.version))
         extracted_dir = self.name + "-" + self.version
         os.rename(extracted_dir, self.source_subfolder)
+        tools.patch(base_path=self.source_subfolder, patch_file="CMakeLists.txt.patch")
 
     def configure_cmake(self):
         cmake = CMake(self)
+        cmake.definitions["FMT_DOC"] = False
         cmake.definitions["FMT_TEST"] = False
         cmake.definitions["FMT_INSTALL"] = True
-        cmake.definitions["BUILD_SHARED_LIBS"] = self.options.shared
         cmake.definitions["FMT_LIB_DIR"] = "lib"
-        cmake.definitions["FMT_USE_CPP14"] = self.options.with_cpp14
         cmake.configure(build_folder=self.build_subfolder)
         return cmake
 
