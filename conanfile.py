@@ -14,7 +14,7 @@ class FmtConan(ConanFile):
     author = "Bincrafters <bincrafters@gmail.com>"
     license = "MIT"
     exports = ['LICENSE.md']
-    exports_sources = ['CMakeLists.txt']
+    exports_sources = ['CMakeLists.txt', 'CMakeLists.txt.patch']
     generators = 'cmake'
     settings = "os", "compiler", "build_type", "arch"
     options = {"shared": [True, False], "header_only": [True, False], "fPIC": [True, False]}
@@ -36,6 +36,7 @@ class FmtConan(ConanFile):
         tools.get("{0}/archive/{1}.tar.gz".format(self.homepage, self.version))
         extracted_dir = self.name + "-" + self.version
         os.rename(extracted_dir, self.source_subfolder)
+        tools.patch(base_path=self.source_subfolder, patch_file="CMakeLists.txt.patch")
 
     def configure_cmake(self):
         cmake = CMake(self)

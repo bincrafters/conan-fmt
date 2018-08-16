@@ -17,7 +17,6 @@ if (FMT_HEADER_ONLY)
 endif(FMT_HEADER_ONLY)
 
 # TEST_RANGES ##################################################################
-
 add_executable(test_ranges test_ranges.cpp)
 target_link_libraries(test_ranges fmt::fmt)
 set_property(TARGET test_ranges PROPERTY CXX_STANDARD 11)
