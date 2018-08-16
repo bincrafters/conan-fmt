@@ -15,7 +15,7 @@ if __name__ == "__main__":
     if tools.os_info.is_windows and os.getenv("CONAN_GCC_VERSIONS"):
         filtered_builds = []
         for settings, options, env_vars, build_requires, reference in builder.items:
-            if not options["fmt:shared"]:
+            if options["fmt:shared"] != False:
                 filtered_builds.append([settings, options, env_vars, build_requires])
         builder.builds = filtered_builds
 
