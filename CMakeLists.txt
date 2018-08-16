@@ -9,3 +9,5 @@ if (WIN32 AND BUILD_SHARED_LIBS)
 endif(MSVC AND BUILD_SHARED_LIBS)
 
 add_subdirectory("source_subfolder")
+
+install(TARGETS ${INSTALL_TARGETS} RUNTIME DESTINATION bin)

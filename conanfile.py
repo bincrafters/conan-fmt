@@ -43,7 +43,6 @@ class FmtConan(ConanFile):
         cmake.definitions["FMT_TEST"] = False
         cmake.definitions["FMT_INSTALL"] = True
         cmake.definitions["FMT_LIB_DIR"] = "lib"
-        cmake.definitions["FMT_SHARED"] = self.options.shared and self.settings.compiler == "Visual Studio"
         cmake.configure(build_folder=self.build_subfolder)
         return cmake
 

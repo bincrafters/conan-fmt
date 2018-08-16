@@ -8,6 +8,10 @@ add_executable(${CMAKE_PROJECT_NAME} test_package.cpp)
 target_link_libraries(${CMAKE_PROJECT_NAME} CONAN_PKG::fmt)
 set_property(TARGET ${CMAKE_PROJECT_NAME} PROPERTY CXX_STANDARD 11)
 
+if (BUILD_SHARED_LIBS)
+    target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE FMT_SHARED=1)
+endif (BUILD_SHARED_LIBS)
+
 if (FMT_HEADER_ONLY)
     target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE FMT_HEADER_ONLY=1)
 endif(FMT_HEADER_ONLY)
