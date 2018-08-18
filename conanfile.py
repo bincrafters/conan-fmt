@@ -70,6 +70,5 @@ class FmtConan(ConanFile):
             self.cpp_info.defines = ["FMT_HEADER_ONLY"]
         else:
             self.cpp_info.libs = tools.collect_libs(self)
-
-        if not self.options.header_only and self.options.shared:
-            self.cpp_info.bindirs.append("lib")
+            if self.options.shared:
+                self.cpp_info.defines.append('FMT_SHARED')
