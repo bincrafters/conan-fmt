@@ -58,11 +58,6 @@ int main() {
 
     fmt::print(std::cout, "{} {}\n", "Magic number", 42);
 
-    int number(0);
-    const auto fp = fmt::internal::get_cached_power(64, number);
-    fmt::print("E: {} - F: {}\n", fp.e, fp.f);
-
-
 #ifdef FMT_EXTENDED_COLORS
     fmt::print(fmt::color::aqua, "Bincrafters\n");
 #endif
