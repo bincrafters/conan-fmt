@@ -7,7 +7,9 @@ import os
 
 class FmtConan(ConanFile):
     name = "fmt"
-    version = "5.2.0"
+    lib_version = "5.2.0"
+    package_version = 1
+    version = "%s-r%d" % (lib_version, package_version)
     homepage = "https://github.com/fmtlib/fmt"
     description = "A safe and fast alternative to printf and IOStreams."
     url = "https://github.com/bincrafters/conan-fmt"
@@ -17,8 +19,8 @@ class FmtConan(ConanFile):
     exports_sources = ['CMakeLists.txt']
     generators = 'cmake'
     settings = "os", "compiler", "build_type", "arch"
-    options = {"shared": [True, False], "header_only": [True, False], "fPIC": [True, False]}
-    default_options = "shared=False", "header_only=False", "fPIC=True"
+    options = {"shared": [True, False], "header_only": [True, False], "fPIC": [True, False], "with_fmt_alias": [True, False]}
+    default_options = "shared=False", "header_only=False", "fPIC=True", "with_fmt_alias=False"
     source_subfolder = "source_subfolder"
     build_subfolder = "build_subfolder"
 
@@ -33,8 +35,8 @@ class FmtConan(ConanFile):
             self.options.remove("fPIC")
 
     def source(self):
-        tools.get("{0}/archive/{1}.tar.gz".format(self.homepage, self.version))
-        extracted_dir = self.name + "-" + self.version
+        tools.get("{0}/archive/{1}.tar.gz".format(self.homepage, self.lib_version))
+        extracted_dir = self.name + "-" + self.lib_version
         os.rename(extracted_dir, self.source_subfolder)
 
     def configure_cmake(self):
@@ -64,9 +66,11 @@ class FmtConan(ConanFile):
             cmake.install()
 
     def package_info(self):
+        if self.options.with_fmt_alias:
+            self.cpp_info.defines.append("FMT_STRING_ALIAS=1")
         if self.options.header_only:
             self.info.header_only()
-            self.cpp_info.defines = ["FMT_HEADER_ONLY"]
+            self.cpp_info.defines.append("FMT_HEADER_ONLY")
         else:
             self.cpp_info.libs = tools.collect_libs(self)
             if self.options.shared:
