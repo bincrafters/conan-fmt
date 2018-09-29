@@ -7,9 +7,7 @@ import os
 
 class FmtConan(ConanFile):
     name = "fmt"
-    lib_version = "5.2.0"
-    package_version = 1
-    version = "%s-r%d" % (lib_version, package_version)
+    version = "5.2.0"
     homepage = "https://github.com/fmtlib/fmt"
     description = "A safe and fast alternative to printf and IOStreams."
     url = "https://github.com/bincrafters/conan-fmt"
@@ -35,8 +33,8 @@ class FmtConan(ConanFile):
             self.options.remove("fPIC")
 
     def source(self):
-        tools.get("{0}/archive/{1}.tar.gz".format(self.homepage, self.lib_version))
-        extracted_dir = self.name + "-" + self.lib_version
+        tools.get("{0}/archive/{1}.tar.gz".format(self.homepage, self.version))
+        extracted_dir = self.name + "-" + self.version
         os.rename(extracted_dir, self.source_subfolder)
 
     def configure_cmake(self):
