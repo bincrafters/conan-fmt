@@ -11,4 +11,5 @@ strategy:
       CONAN_GCC_VERSIONS: 4.9
       CONAN_DOCKER_IMAGE: lasote/conangcc49
 steps:
+- script: pip install conan conan_package_tools bincrafters_package_tools
 - script: python build.py
