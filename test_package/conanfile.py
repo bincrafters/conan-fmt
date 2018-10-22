@@ -13,10 +13,5 @@ class TestPackageConan(ConanFile):
         cmake.build()
 
     def test(self):
-        with tools.environment_append(RunEnvironment(self).vars):
-            if self.settings.os == "Windows":
-                self.run(os.path.join("bin","test_package"))
-                self.run(os.path.join("bin","test_ranges"))
-            else:
-                self.run("DYLD_LIBRARY_PATH=%s %s"%(os.environ['DYLD_LIBRARY_PATH'],os.path.join("bin","test_package")))
-                self.run("DYLD_LIBRARY_PATH=%s %s"%(os.environ['DYLD_LIBRARY_PATH'],os.path.join("bin","test_ranges")))
+        self.run(os.path.join("bin","test_package"), run_environment=True)
+        self.run(os.path.join("bin","test_ranges"), run_environment=True)
