@@ -21,6 +21,8 @@ class FmtConan(ConanFile):
     default_options = {"shared": False, "header_only": False, "fPIC": True, "with_fmt_alias": False}
     _source_subfolder = "source_subfolder"
     _build_subfolder = "build_subfolder"
+    
+    build_requires = "cmake_installer/[~=3.1]@conan/stable"   
 
     def config_options(self):
         if self.settings.os == "Windows":
