@@ -51,6 +51,10 @@ class FmtConan(ConanFile):
             cmake = self._configure_cmake()
             cmake.build()
 
+    def package_id(self):
+        # FMT_STRING_ALIAS is only definition, so it doesn't affect package id
+        del self.info.options.with_fmt_alias
+
     def package(self):
         self.copy("LICENSE.rst", dst="licenses", src=self._source_subfolder, keep_path=False)
         if self.options.header_only:
